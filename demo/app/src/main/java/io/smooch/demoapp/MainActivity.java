@@ -1,12 +1,24 @@
 package io.smooch.demoapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentManager;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.Menu;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.smooch.core.InitializationStatus;
+import io.smooch.core.Settings;
+import io.smooch.core.Smooch;
+import io.smooch.core.SmoochCallback;
+import io.smooch.core.User;
 import io.smooch.features.conversationlist.ConversationListActivity;
 import io.smooch.ui.ConversationActivity;
 
@@ -25,6 +37,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Smooch.init(getApplication(), new Settings("59a93c829200175800018222"), new SmoochCallback<InitializationStatus>() {
+            @Override
+            public void run(Response response) {
+                // Handle init response here!
+                Log.d("MainActivity", "Running Smooch... Vrooom!" + response.toString());
+            }
+        });
+        addSomeProperties(User.getCurrentUser());
+
         setContentView(R.layout.activity_main);
 
         navigationDrawerFragment = (NavigationDrawerFragment)
@@ -87,6 +109,23 @@ public class MainActivity extends AppCompatActivity
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(title);
+    }
+
+
+    private void addSomeProperties(final User user) {
+        final Map<String, Object> customProperties = new HashMap<>();
+
+        // Identify user with default properties
+        user.setFirstName("Demo");
+        user.setLastName("App");
+        user.setEmail("demo.app@smooch.io");
+        user.setSignedUpAt(new Date(1420070400000L));
+
+        // Add your own custom properties
+        customProperties.put("Last Seen", new Date());
+        customProperties.put("Awesome", true);
+        customProperties.put("Karma", 1337);
+        user.addMetadata(customProperties);
     }
 
     @Override

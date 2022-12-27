@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Smooch_settings_notificationIntent">io.smooch.demoapp.MainActivity</string>
+    <string name="Smooch_settings_notificationIntent">io.smooch.demoapp.YourNotificationHandlerActivity</string>
     <string name="Smooch_settings_notificationTriggerKey">trigger</string>
     <string name="Smooch_settings_notificationTrigger">SmoochNotification</string>
 </resources>
